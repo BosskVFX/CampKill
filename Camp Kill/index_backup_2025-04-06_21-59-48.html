@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camp Kill</title>
+    <script>
+      // Add error handler for script loading
+      window.addEventListener('error', function(e) {
+        console.error('Script error:', e);
+        document.getElementById('loading').innerHTML += '<br>Error loading scripts: ' + e.message;
+      }, true);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" 
+      onload="console.log('Supabase library loaded successfully'); window.supabase = supabase;"
+      onerror="console.error('Failed to load Supabase library'); document.getElementById('loading').innerHTML += '<br>Failed to load Supabase library';"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"
+      onload="console.log('p5.js library loaded successfully')"
+      onerror="console.error('Failed to load p5.js library'); document.getElementById('loading').innerHTML += '<br>Failed to load p5.js library';"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/addons/p5.sound.js"
+      onload="console.log('p5.sound library loaded successfully')"
+      onerror="console.error('Failed to load p5.sound library'); document.getElementById('loading').innerHTML += '<br>Failed to load p5.sound library';"
+    ></script>
+    <script>
+      // Add Supabase configuration - you can replace these with your actual values
+      const SUPABASE_URL = 'https://nqnxcqvxyboqmwzvrowt.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xbnhjcXZ4eWJvcW13enZyb3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjMyMDcsImV4cCI6MjA1OTE5OTIwN30.kTK0mFYpWs1qMfvtBu-Ei9xI-jofiYDF94BHmqhMJ_w';
+      
+      // Expose the Supabase configuration to the window object so sketch.js can access it
+      window.SUPABASE_URL = SUPABASE_URL;
+      window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
+      
+      // Initialize Supabase global reference
+      window.initializeSupabaseReference = function() {
+        try {
+          if (typeof supabase !== 'undefined') {
+            window.supabase = supabase;
+            console.log("Supabase global reference initialized");
+          } else {
+            console.error("Could not find Supabase global object");
+          }
+        } catch (e) {
+          console.error("Error initializing Supabase reference:", e);
+        }
+      };
+      
+      // Call the initialization after the script loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initializeSupabaseReference);
+      } else {
+        window.initializeSupabaseReference();
+      }
+    </script>
+    <script src="sketch.js"
+      onload="console.log('Game script loaded successfully')"
+      onerror="console.error('Failed to load game script'); document.getElementById('loading').innerHTML += '<br>Failed to load game script';"
+    ></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #000;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      #loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 1000;
+      }
+      #debug {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.7);
+        padding: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        z-index: 1000;
+      }
+      canvas {
+        border: 2px solid #333;
+      }
+      /* Add styling for the asset note */
+      #asset-note {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.7);
+        padding: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        z-index: 1000;
+        max-width: 350px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">
+      Loading game assets...<br>
+      If the game doesn't appear, check console for errors (F12)<br><br>
+      <b>Note:</b> If you see circles instead of sprites, place image files in the assets/images directory:
+      <ul>
+        <li>assets/images/killer.png</li>
+        <li>assets/images/detective.png</li>
+        <li>assets/images/camper1.png</li>
+        <li>assets/images/camper2.png</li>
+        <li>assets/images/camper3.png</li>
+      </ul>
+    </div>
+    <div id="debug"></div>
+    <div id="asset-note">
+      <b>Missing sprites?</b> Place image files in assets/images/<br>
+      Required: killer.png, detective.png, camper1.png, camper2.png, camper3.png
+    </div>
+  </body>
+</html>
